@@ -6,7 +6,9 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { GoogleGenAI } from "@google/genai";
 
 
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY 
+});
 const History = []
 
 async function transformQuery(question){
@@ -17,7 +19,7 @@ History.push({
     })  
 
 const response = await ai.models.generateContent({
-    model: "gemini-1.5-flash", 
+    model: "gemini-3-flash-preview", 
     contents: History,
     config: {
       systemInstruction: `You are a query rewriting expert. Based on the provided chat history, rephrase the "Follow Up user Question" into a complete, standalone question that can be understood without the chat history.
@@ -66,7 +68,7 @@ async function chatting(question){
     })    
 
     const response = await ai.models.generateContent({
-    model: "gemini-1.5-flash", 
+    model:"gemini-3-flash-preview", 
     contents: History,
     config: {
       systemInstruction: `You have to behave like a Data Structure and Algorithm Expert.
